@@ -1,5 +1,6 @@
-aff840fe9caf7cf3bff15eac5578f952 *DESCRIPTION
+b647f02dd6ef8b86d4ace9b7f351c9e1 *DESCRIPTION
 78988284fd56a4e7542864dfcff0ea00 *NAMESPACE
+98e94b81e3e1559ce456c68e3ba8e1b9 *NEWS.md
 b5eb87f8e792b45d7e11c65408b05ef7 *R/calc_igd.R
 f0007d743ade7f1439fd708a9e46f459 *R/check_stop_criteria.R
 539ee4d3e28b2d1bc05af89bbc3001af *R/constraint_none.R
@@ -49,7 +50,7 @@ b8eca9933738457eaf82970762d9bc92 *R/variation_none.R
 fa4ce55f059cfafa1dc6ab7c9a8db200 *R/variation_polymut.R
 7a542b2693c68cbce89ac4d32d38c6bb *R/variation_sbx.R
 44b70979f8f66ab5599e88a6e2aa1ebe *R/variation_truncate.R
-8279a393c41a80a560570c1e6070e831 *README.md
+0c0e18c6fe02475b7efb5c576e991624 *README.md
 a6bd47801c06ef33cf602d59354ccb21 *build/vignette.rds
 19861509b3eef865311a05a807156177 *inst/doc/problem-definition.R
 fc3a47c891089542d33dc2fea1fd56cd *inst/doc/problem-definition.html
@@ -104,6 +105,6 @@ c9a9d3387fce2c4ce02410cb9e9cf9cf *man/stop_maxiter.Rd
 43fe1d3a5495c856e8ceffb1831e49cd *man/variation_sbx.Rd
 274a056274885d975bf678d3113e0699 *man/variation_truncate.Rd
 453d9b87313f223fa42ec1a807f99d1c *tests/testthat.R
-64d55b561451bd848fa06ed7c897143d *tests/testthat/test_decomposition.R
+c340fcd24c2ae542f7f2e6fe256dac8d *tests/testthat/test_decomposition.R
 9e4e9ca7945a62cacdf15b34bfb955b0 *tests/testthat/test_integration.R
-681c6254f370f2ebe1951c77262e82ec *tests/testthat/test_scalarization.R
+e309e5d8435ec60adbf87e7354b9a81b *tests/testthat/test_scalarization.R
