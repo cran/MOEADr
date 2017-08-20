@@ -9,10 +9,6 @@
 #' in \code{problem$xmin} and \code{problem$xmax} are mapped to \code{0} and
 #' \code{1}, respectively.
 #'
-#' **Warning**: The calling environment must have a counter variable \code{nfe},
-#' which tracks the total number of function evaluations. This routine
-#' accesses and updates that \code{nfe} variable.
-#'
 #' @param X Population matrix of the MOEA/D (each row is a candidate solution).
 #' @param problem list of named problem parameters. See Section
 #' `Problem Description` of the [moead()] documentation for details.
@@ -23,6 +19,14 @@
 #' matrix of constraint values `Cmatrix`, a matrix of constraint violations
 #' `Vmatrix`, and a vector of total violations `v`), and the updated counter
 #' `nfe`.
+#'
+#' @examples
+#' ex.problem <- list(name = "example_problem",
+#'                    xmin = rep(-1, 5),
+#'                    xmax = rep(1, 5),
+#'                    m    = 2)
+#' X <- create_population(20, ex.problem)
+#' Y <- evaluate_population(X, ex.problem, nfe = 0)
 #'
 #' @export
 

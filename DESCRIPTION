@@ -6,11 +6,12 @@ Description: Modular implementation of Multiobjective Evolutionary Algorithms
               <DOI:10.1109/TEVC.2007.892759>] for quick assembling and 
               testing of new algorithmic components, as well as easy 
               replication of published MOEA/D proposals.
-Version: 0.2.1
-Date: 2017-3-19
+Version: 1.0.0
+Date: 2017-8-18
 Imports: FNN, assertthat
-Suggests: smoof, testthat, knitr, rmarkdown, irace
-Depends: R (>= 3.3.0)
+Suggests: smoof, scatterplot3d, MASS, grDevices, irace, testthat,
+        knitr, rmarkdown, emoa, ggplot2, reshape2
+Depends: R (>= 3.4.0)
 Authors@R: c(person("Felipe", "Campelo",
     email   = "fcampelo@ufmg.br",
     role    = c("aut", "cre")),
@@ -31,6 +32,6 @@ RoxygenNote: 6.0.1
 VignetteBuilder: knitr
 URL: https://github.com/fcampelo/MOEADr
 NeedsCompilation: no
-Packaged: 2017-03-20 00:59:37 UTC; fcampelo
+Packaged: 2017-08-19 11:43:34 UTC; fcampelo
 Repository: CRAN
-Date/Publication: 2017-03-20 05:22:12 UTC
+Date/Publication: 2017-08-20 19:51:55 UTC
