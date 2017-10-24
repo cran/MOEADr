@@ -90,7 +90,7 @@
 #' external solution archive (`TRUE`) or not (`FALSE`). Since it adds to the
 #' computational burden and memory requirements of the algorithm, the use of an
 #' archive population is recommended only in the case of constrained problems
-#' with constraint handling method that can occasionaly accept unfeasible
+#' with constraint handling method that can occasionally accept unfeasible
 #' solutions, leading to the potential loss of feasible efficient solutions for
 #' certain subproblems (e.g., [constraint_vbr()] with `type` = "sr" or "vt").
 #'
@@ -163,7 +163,7 @@
 #'
 #' @export
 #'
-#' @return List object of class _moeadoutput_ containing:
+#' @return List object of class _moead_ containing:
 #'
 #' - information on the final population (`X`), its objective values (`Y`) and
 #'  constraint information list (`V`) (see [evaluate_population()] for details);
@@ -290,14 +290,15 @@ moead <- function(preset = NULL,     # List:  Set of strategy/components
 
   # Check seed
   if (is.null(seed)) {
-    seed <- as.integer(Sys.time())
+    if (!exists(".Random.seed")) stats::runif(1)
+    seed <- .Random.seed
   } else {
     assertthat::assert_that(assertthat::is.count(seed))
+    set.seed(seed)               # set PRNG seed
   }
   # ============ End Error catching and default value definitions ============ #
 
   # ============================= Algorithm setup ============================ #
-  set.seed(seed)               # set PRNG seed
   nfe        <- 0              # counter for function evaluations
   time.start <- Sys.time()     # Store initial time
   iter.times <- numeric(10000) # pre-allocate vector for iteration times.
@@ -433,22 +434,24 @@ moead <- function(preset = NULL,     # List:  Set of strategy/components
   if(!is.null(Archive)) {
     Archive$X <- denormalize_population(Archive$X, problem)
     colnames(Archive$Y) <- paste0("f", 1:ncol(Archive$Y))
+    Archive$W           <- W
     colnames(Archive$W) <- paste0("f", 1:ncol(Archive$W))
   }
 
   # Output
-  out <- list(X       = X,
-              Y       = Y,
-              V       = V,
-              W       = W,
-              Archive = Archive,
-              ideal   = apply(Y, 2, min),
-              nadir   = apply(Y, 2, max),
-              nfe     = nfe,
-              n.iter  = iter,
-              time    = difftime(Sys.time(), time.start, units = "secs"),
-              seed    = seed)
-  class(out) <- c("moeadoutput", "list")
+  out <- list(X           = X,
+              Y           = Y,
+              V           = V,
+              W           = W,
+              Archive     = Archive,
+              ideal       = apply(Y, 2, min),
+              nadir       = apply(Y, 2, max),
+              nfe         = nfe,
+              n.iter      = iter,
+              time        = difftime(Sys.time(), time.start, units = "secs"),
+              seed        = seed,
+              inputConfig = moead.input.pars)
+  class(out) <- c("moead", "list")
 
   return(out)
   # ================================ End Output ============================== #

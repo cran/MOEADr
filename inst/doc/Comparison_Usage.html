@@ -12,7 +12,7 @@
 
 <meta name="author" content="Claus Aranha, Felipe Campelo" />
 
-<meta name="date" content="2017-08-19" />
+<meta name="date" content="2017-10-23" />
 
 <title>Fine tuning MOEA/D configurations using MOEADr and irace</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Fine tuning MOEA/D configurations using MOEADr and irace</h1>
 <h4 class="author"><em>Claus Aranha, Felipe Campelo</em></h4>
-<h4 class="date"><em>2017-08-19</em></h4>
+<h4 class="date"><em>2017-10-23</em></h4>
 
 
 
@@ -97,34 +97,34 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <span class="kw">suppressPackageStartupMessages</span>(<span class="kw">library</span>(smoof))
 <span class="kw">suppressPackageStartupMessages</span>(<span class="kw">library</span>(MOEADr))
 
-scenario                &lt;-<span class="st"> </span>irace::<span class="kw">defaultScenario</span>()
-scenario$seed           &lt;-<span class="st"> </span><span class="dv">123456</span> <span class="co"># Seed for the experiment</span>
-scenario$targetRunner   &lt;-<span class="st"> &quot;target.runner&quot;</span> <span class="co"># Runner function (def. below)</span>
-scenario$forbiddenFile  &lt;-<span class="st"> &quot;../inst/extdata/forbidden.txt&quot;</span> <span class="co"># forbidden configs</span>
-scenario$debugLevel     &lt;-<span class="st"> </span><span class="dv">1</span>
-scenario$maxExperiments &lt;-<span class="st"> </span><span class="dv">20000</span> <span class="co"># Tuning budget</span>
-scenario$testNbElites   &lt;-<span class="st"> </span><span class="dv">7</span>     <span class="co"># test all final elite configurations</span>
+scenario                &lt;-<span class="st"> </span>irace<span class="op">::</span><span class="kw">defaultScenario</span>()
+scenario<span class="op">$</span>seed           &lt;-<span class="st"> </span><span class="dv">123456</span> <span class="co"># Seed for the experiment</span>
+scenario<span class="op">$</span>targetRunner   &lt;-<span class="st"> &quot;target.runner&quot;</span> <span class="co"># Runner function (def. below)</span>
+scenario<span class="op">$</span>forbiddenFile  &lt;-<span class="st"> &quot;../inst/extdata/forbidden.txt&quot;</span> <span class="co"># forbidden configs</span>
+scenario<span class="op">$</span>debugLevel     &lt;-<span class="st"> </span><span class="dv">1</span>
+scenario<span class="op">$</span>maxExperiments &lt;-<span class="st"> </span><span class="dv">20000</span> <span class="co"># Tuning budget</span>
+scenario<span class="op">$</span>testNbElites   &lt;-<span class="st"> </span><span class="dv">7</span>     <span class="co"># test all final elite configurations</span>
 
 <span class="co"># Number of cores to be used by irace (set with caution!)</span>
-nc                      &lt;-<span class="st"> </span>parallel::<span class="kw">detectCores</span>() -<span class="st"> </span><span class="dv">1</span>
-scenario$parallel       &lt;-<span class="st"> </span>nc
+nc                      &lt;-<span class="st"> </span>parallel<span class="op">::</span><span class="kw">detectCores</span>() <span class="op">-</span><span class="st"> </span><span class="dv">1</span>
+scenario<span class="op">$</span>parallel       &lt;-<span class="st"> </span>nc
 
 <span class="co"># Read tunable parameter list from file</span>
 parameters &lt;-<span class="st"> </span><span class="kw">readParameters</span>(<span class="st">&quot;../inst/extdata/parameters.txt&quot;</span>)</code></pre></div>
 <p>Second, it is necessary to generate the training instances based on the benchmark function implementations in package <strong>smoof</strong>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#===============</span>
 ### Build training instances
-fname   &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;UF_&quot;</span>, <span class="dv">1</span>:<span class="dv">10</span>)
-dims    &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">20</span>:<span class="dv">29</span>,
-             <span class="dv">31</span>:<span class="dv">39</span>,
-             <span class="dv">41</span>:<span class="dv">49</span>,
-             <span class="dv">51</span>:<span class="dv">60</span>)
+fname   &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;UF_&quot;</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>)
+dims    &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">20</span><span class="op">:</span><span class="dv">29</span>,
+             <span class="dv">31</span><span class="op">:</span><span class="dv">39</span>,
+             <span class="dv">41</span><span class="op">:</span><span class="dv">49</span>,
+             <span class="dv">51</span><span class="op">:</span><span class="dv">60</span>)
 
 allfuns            &lt;-<span class="st"> </span><span class="kw">expand.grid</span>(fname, dims, <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)
-scenario$instances &lt;-<span class="st"> </span><span class="kw">paste0</span>(allfuns[,<span class="dv">1</span>], <span class="st">&quot;_&quot;</span>, allfuns[,<span class="dv">2</span>])
+scenario<span class="op">$</span>instances &lt;-<span class="st"> </span><span class="kw">paste0</span>(allfuns[,<span class="dv">1</span>], <span class="st">&quot;_&quot;</span>, allfuns[,<span class="dv">2</span>])
 
-for (i in <span class="dv">1</span>:<span class="kw">nrow</span>(allfuns)){
-  <span class="kw">assign</span>(<span class="dt">x     =</span> scenario$instances[i],
+<span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(allfuns)){
+  <span class="kw">assign</span>(<span class="dt">x     =</span> scenario<span class="op">$</span>instances[i],
          <span class="dt">value =</span> <span class="kw">make_vectorized_smoof</span>(<span class="dt">prob.name  =</span> <span class="st">&quot;UF&quot;</span>,
                                        <span class="dt">dimensions =</span> allfuns[i, <span class="dv">2</span>],
                                        <span class="dt">id         =</span> <span class="kw">as.numeric</span>(<span class="kw">strsplit</span>(allfuns[i, <span class="dv">1</span>], <span class="st">&quot;_&quot;</span>)
@@ -133,55 +133,55 @@ for (i in <span class="dv">1</span>:<span class="kw">nrow</span>(allfuns)){
 ### Build test instances
 dims                   &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">30</span>, <span class="dv">40</span>, <span class="dv">50</span>)
 allfuns                &lt;-<span class="st"> </span><span class="kw">expand.grid</span>(fname, dims, <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)
-scenario$testInstances &lt;-<span class="st"> </span><span class="kw">paste0</span>(allfuns[,<span class="dv">1</span>], <span class="st">&quot;_&quot;</span>, allfuns[,<span class="dv">2</span>])
+scenario<span class="op">$</span>testInstances &lt;-<span class="st"> </span><span class="kw">paste0</span>(allfuns[,<span class="dv">1</span>], <span class="st">&quot;_&quot;</span>, allfuns[,<span class="dv">2</span>])
 
-for (i in <span class="dv">1</span>:<span class="kw">nrow</span>(allfuns)){
-  <span class="kw">assign</span>(<span class="dt">x     =</span> scenario$testInstances[i],
+<span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(allfuns)){
+  <span class="kw">assign</span>(<span class="dt">x     =</span> scenario<span class="op">$</span>testInstances[i],
          <span class="dt">value =</span> <span class="kw">make_vectorized_smoof</span>(<span class="dt">prob.name  =</span> <span class="st">&quot;UF&quot;</span>,
                                        <span class="dt">dimensions =</span> allfuns[i, <span class="dv">2</span>],
                                        <span class="dt">id         =</span> <span class="kw">as.numeric</span>(<span class="kw">strsplit</span>(allfuns[i, <span class="dv">1</span>], <span class="st">&quot;_&quot;</span>)
                                                                [[<span class="dv">1</span>]][<span class="dv">2</span>]))) }</code></pre></div>
 <p>Third, we need to specify the code that will generate a MOEA/D configuration based on the parameter string created by the <em>irace</em> routine:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">target.runner &lt;-<span class="st"> </span>function(experiment, scenario){
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">target.runner &lt;-<span class="st"> </span><span class="cf">function</span>(experiment, scenario){
   <span class="kw">force</span>(experiment)
-  conf &lt;-<span class="st"> </span>experiment$configuration
-  inst &lt;-<span class="st"> </span>experiment$instance
+  conf &lt;-<span class="st"> </span>experiment<span class="op">$</span>configuration
+  inst &lt;-<span class="st"> </span>experiment<span class="op">$</span>instance
 
   <span class="co"># Assemble moead input lists</span>
   ## 1. Problem
   fdef    &lt;-<span class="st"> </span><span class="kw">unlist</span>(<span class="kw">strsplit</span>(inst, <span class="dt">split =</span> <span class="st">&quot;_&quot;</span>))
-  uffun   &lt;-<span class="st"> </span>smoof::<span class="kw">makeUFFunction</span>(<span class="dt">dimensions =</span> <span class="kw">as.numeric</span>(fdef[<span class="dv">3</span>]),
+  uffun   &lt;-<span class="st"> </span>smoof<span class="op">::</span><span class="kw">makeUFFunction</span>(<span class="dt">dimensions =</span> <span class="kw">as.numeric</span>(fdef[<span class="dv">3</span>]),
                                    <span class="dt">id         =</span> <span class="kw">as.numeric</span>(fdef[<span class="dv">2</span>]))
   fattr   &lt;-<span class="st"> </span><span class="kw">attr</span>(uffun, <span class="st">&quot;par.set&quot;</span>)
   problem &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">name       =</span> inst,
-                  <span class="dt">xmin       =</span> fattr$pars$x$lower,
-                  <span class="dt">xmax       =</span> fattr$pars$x$upper,
+                  <span class="dt">xmin       =</span> fattr<span class="op">$</span>pars<span class="op">$</span>x<span class="op">$</span>lower,
+                  <span class="dt">xmax       =</span> fattr<span class="op">$</span>pars<span class="op">$</span>x<span class="op">$</span>upper,
                   <span class="dt">m          =</span> <span class="kw">attr</span>(uffun, <span class="st">&quot;n.objectives&quot;</span>))
 
   ## 2. Decomp
-  decomp &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">name =</span> conf$decomp.name)
-  if (problem$m ==<span class="st"> </span><span class="dv">2</span>){ <span class="co"># &lt;-- 2 objectives</span>
-    if(decomp$name ==<span class="st"> &quot;SLD&quot;</span>) decomp$H &lt;-<span class="st"> </span><span class="dv">99</span> <span class="co"># &lt;-- yields N = 100</span>
-    if(decomp$name ==<span class="st"> &quot;Uniform&quot;</span>) decomp$N &lt;-<span class="st"> </span><span class="dv">100</span>
-  } else { <span class="co"># &lt;-- 3 objectives</span>
-    if(decomp$name ==<span class="st"> &quot;SLD&quot;</span>) decomp$H &lt;-<span class="st"> </span><span class="dv">16</span> <span class="co"># &lt;-- yields N = 153</span>
-    if(decomp$name ==<span class="st"> &quot;Uniform&quot;</span>) decomp$N &lt;-<span class="st"> </span><span class="dv">150</span>
+  decomp &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">name =</span> conf<span class="op">$</span>decomp.name)
+  <span class="cf">if</span> (problem<span class="op">$</span>m <span class="op">==</span><span class="st"> </span><span class="dv">2</span>){ <span class="co"># &lt;-- 2 objectives</span>
+    <span class="cf">if</span>(decomp<span class="op">$</span>name <span class="op">==</span><span class="st"> &quot;SLD&quot;</span>) decomp<span class="op">$</span>H &lt;-<span class="st"> </span><span class="dv">99</span> <span class="co"># &lt;-- yields N = 100</span>
+    <span class="cf">if</span>(decomp<span class="op">$</span>name <span class="op">==</span><span class="st"> &quot;Uniform&quot;</span>) decomp<span class="op">$</span>N &lt;-<span class="st"> </span><span class="dv">100</span>
+  } <span class="cf">else</span> { <span class="co"># &lt;-- 3 objectives</span>
+    <span class="cf">if</span>(decomp<span class="op">$</span>name <span class="op">==</span><span class="st"> &quot;SLD&quot;</span>) decomp<span class="op">$</span>H &lt;-<span class="st"> </span><span class="dv">16</span> <span class="co"># &lt;-- yields N = 153</span>
+    <span class="cf">if</span>(decomp<span class="op">$</span>name <span class="op">==</span><span class="st"> &quot;Uniform&quot;</span>) decomp<span class="op">$</span>N &lt;-<span class="st"> </span><span class="dv">150</span>
   }
 
   ## 3. Neighbors
-  neighbors &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">name    =</span> conf$neighbor.name,
-                    <span class="dt">T       =</span> conf$T,
-                    <span class="dt">delta.p =</span> conf$delta.p)
+  neighbors &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">name    =</span> conf<span class="op">$</span>neighbor.name,
+                    <span class="dt">T       =</span> conf<span class="op">$</span>T,
+                    <span class="dt">delta.p =</span> conf<span class="op">$</span>delta.p)
 
   ## 4. Aggfun
-  aggfun &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">name =</span> conf$aggfun.name)
-  if (aggfun$name ==<span class="st"> &quot;PBI&quot;</span>) aggfun$theta &lt;-<span class="st"> </span>conf$aggfun.theta
+  aggfun &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">name =</span> conf<span class="op">$</span>aggfun.name)
+  <span class="cf">if</span> (aggfun<span class="op">$</span>name <span class="op">==</span><span class="st"> &quot;PBI&quot;</span>) aggfun<span class="op">$</span>theta &lt;-<span class="st"> </span>conf<span class="op">$</span>aggfun.theta
 
   ## 5. Update
-  update &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">name       =</span> conf$update.name,
-                 <span class="dt">UseArchive =</span> conf$UseArchive)
-  if (update$name !=<span class="st"> &quot;standard&quot;</span>) update$nr &lt;-<span class="st"> </span>conf$nr
-  if (update$name ==<span class="st"> &quot;best&quot;</span>)     update$Tr &lt;-<span class="st"> </span>conf$Tr
+  update &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">name       =</span> conf<span class="op">$</span>update.name,
+                 <span class="dt">UseArchive =</span> conf<span class="op">$</span>UseArchive)
+  <span class="cf">if</span> (update<span class="op">$</span>name <span class="op">!=</span><span class="st"> &quot;standard&quot;</span>) update<span class="op">$</span>nr &lt;-<span class="st"> </span>conf<span class="op">$</span>nr
+  <span class="cf">if</span> (update<span class="op">$</span>name <span class="op">==</span><span class="st"> &quot;best&quot;</span>)     update<span class="op">$</span>Tr &lt;-<span class="st"> </span>conf<span class="op">$</span>Tr
 
   ## 6. Scaling
   scaling &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">name =</span> <span class="st">&quot;simple&quot;</span>)
@@ -197,49 +197,50 @@ for (i in <span class="dv">1</span>:<span class="kw">nrow</span>(allfuns)){
   showpars  &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">show.iters =</span> <span class="st">&quot;none&quot;</span>)
 
   ## 10. Variation stack
-  variation &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="kw">list</span>(<span class="dt">name =</span> conf$varop1),
-                    <span class="kw">list</span>(<span class="dt">name =</span> conf$varop2),
-                    <span class="kw">list</span>(<span class="dt">name =</span> conf$varop3),
-                    <span class="kw">list</span>(<span class="dt">name =</span> conf$varop4),
+  variation &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="kw">list</span>(<span class="dt">name =</span> conf<span class="op">$</span>varop1),
+                    <span class="kw">list</span>(<span class="dt">name =</span> conf<span class="op">$</span>varop2),
+                    <span class="kw">list</span>(<span class="dt">name =</span> conf<span class="op">$</span>varop3),
+                    <span class="kw">list</span>(<span class="dt">name =</span> conf<span class="op">$</span>varop4),
                     <span class="kw">list</span>(<span class="dt">name =</span> <span class="st">&quot;truncate&quot;</span>))
 
-  for (i in <span class="kw">seq_along</span>(variation)){
-    if (variation[[i]]$name ==<span class="st"> &quot;binrec&quot;</span>) {
-      variation[[i]]$rho &lt;-<span class="st"> </span><span class="kw">get</span>(<span class="kw">paste0</span>(<span class="st">&quot;binrec.rho&quot;</span>, i), conf)
+  <span class="cf">for</span> (i <span class="cf">in</span> <span class="kw">seq_along</span>(variation)){
+    <span class="cf">if</span> (variation[[i]]<span class="op">$</span>name <span class="op">==</span><span class="st"> &quot;binrec&quot;</span>) {
+      variation[[i]]<span class="op">$</span>rho &lt;-<span class="st"> </span><span class="kw">get</span>(<span class="kw">paste0</span>(<span class="st">&quot;binrec.rho&quot;</span>, i), conf)
     }
-    if (variation[[i]]$name ==<span class="st"> &quot;diffmut&quot;</span>) {
-      variation[[i]]$basis &lt;-<span class="st"> </span><span class="kw">get</span>(<span class="kw">paste0</span>(<span class="st">&quot;diffmut.basis&quot;</span>, i), conf)
-      variation[[i]]$Phi   &lt;-<span class="st"> </span><span class="ot">NULL</span>
+    <span class="cf">if</span> (variation[[i]]<span class="op">$</span>name <span class="op">==</span><span class="st"> &quot;diffmut&quot;</span>) {
+      variation[[i]]<span class="op">$</span>basis &lt;-<span class="st"> </span><span class="kw">get</span>(<span class="kw">paste0</span>(<span class="st">&quot;diffmut.basis&quot;</span>, i), conf)
+      variation[[i]]<span class="op">$</span>Phi   &lt;-<span class="st"> </span><span class="ot">NULL</span>
     }
-    if (variation[[i]]$name ==<span class="st"> &quot;polymut&quot;</span>) {
-      variation[[i]]$etam &lt;-<span class="st"> </span><span class="kw">get</span>(<span class="kw">paste0</span>(<span class="st">&quot;polymut.eta&quot;</span>, i), conf)
-      variation[[i]]$pm   &lt;-<span class="st"> </span><span class="kw">get</span>(<span class="kw">paste0</span>(<span class="st">&quot;polymut.pm&quot;</span>, i), conf)
+    <span class="cf">if</span> (variation[[i]]<span class="op">$</span>name <span class="op">==</span><span class="st"> &quot;polymut&quot;</span>) {
+      variation[[i]]<span class="op">$</span>etam &lt;-<span class="st"> </span><span class="kw">get</span>(<span class="kw">paste0</span>(<span class="st">&quot;polymut.eta&quot;</span>, i), conf)
+      variation[[i]]<span class="op">$</span>pm   &lt;-<span class="st"> </span><span class="kw">get</span>(<span class="kw">paste0</span>(<span class="st">&quot;polymut.pm&quot;</span>, i), conf)
     }
-    if (variation[[i]]$name ==<span class="st"> &quot;sbx&quot;</span>) {
-      variation[[i]]$etax &lt;-<span class="st"> </span><span class="kw">get</span>(<span class="kw">paste0</span>(<span class="st">&quot;sbx.eta&quot;</span>, i), conf)
-      variation[[i]]$pc   &lt;-<span class="st"> </span><span class="kw">get</span>(<span class="kw">paste0</span>(<span class="st">&quot;sbx.pc&quot;</span>, i), conf)
+    <span class="cf">if</span> (variation[[i]]<span class="op">$</span>name <span class="op">==</span><span class="st"> &quot;sbx&quot;</span>) {
+      variation[[i]]<span class="op">$</span>etax &lt;-<span class="st"> </span><span class="kw">get</span>(<span class="kw">paste0</span>(<span class="st">&quot;sbx.eta&quot;</span>, i), conf)
+      variation[[i]]<span class="op">$</span>pc   &lt;-<span class="st"> </span><span class="kw">get</span>(<span class="kw">paste0</span>(<span class="st">&quot;sbx.pc&quot;</span>, i), conf)
     }
-    if (variation[[i]]$name ==<span class="st"> &quot;localsearch&quot;</span>) {
-      variation[[i]]$type     &lt;-<span class="st"> </span>conf$ls.type
-      variation[[i]]$gamma.ls &lt;-<span class="st"> </span>conf$gamma.ls
+    <span class="cf">if</span> (variation[[i]]<span class="op">$</span>name <span class="op">==</span><span class="st"> &quot;localsearch&quot;</span>) {
+      variation[[i]]<span class="op">$</span>type     &lt;-<span class="st"> </span>conf<span class="op">$</span>ls.type
+      variation[[i]]<span class="op">$</span>gamma.ls &lt;-<span class="st"> </span>conf<span class="op">$</span>gamma.ls
     }
   }
 
   ## 11. Seed
-  seed &lt;-<span class="st"> </span>conf$seed
+  seed &lt;-<span class="st"> </span>conf<span class="op">$</span>seed
   
   <span class="co"># Run MOEA/D</span>
-  out &lt;-<span class="st"> </span><span class="kw">moead</span>(problem, decomp,  aggfun, neighbors, variation, update,
+  out &lt;-<span class="st"> </span><span class="kw">moead</span>(<span class="dt">preset =</span> <span class="ot">NULL</span>,
+               problem, decomp,  aggfun, neighbors, variation, update,
                constraint, scaling, stopcrit, showpars, seed)
 
   <span class="co"># return IGD based on reference data</span>
   Yref &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(<span class="kw">read.table</span>(<span class="kw">paste0</span>(<span class="st">&quot;../inst/extdata/pf_data/&quot;</span>,
                                       fdef[<span class="dv">1</span>], fdef[<span class="dv">2</span>], <span class="st">&quot;.dat&quot;</span>)))
-  <span class="kw">return</span>(<span class="kw">list</span>(<span class="dt">cost =</span> <span class="kw">calcIGD</span>(<span class="dt">Y =</span> out$Y, <span class="dt">Yref =</span> Yref)))
+  <span class="kw">return</span>(<span class="kw">list</span>(<span class="dt">cost =</span> <span class="kw">calcIGD</span>(<span class="dt">Y =</span> out<span class="op">$</span>Y, <span class="dt">Yref =</span> Yref)))
 }</code></pre></div>
 <p>Finally, we run the experiment, and save the outputs. Note that this experiment will take a long time to run (24 hours in a 24 cluster machine), so take that into account when reproducing these results. For more details on the code above, check the documentation of the <strong>irace</strong> package.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Running the experiment
-irace.output &lt;-<span class="st"> </span>irace::<span class="kw">irace</span>(scenario, parameters)
+irace.output &lt;-<span class="st"> </span>irace<span class="op">::</span><span class="kw">irace</span>(scenario, parameters)
 <span class="kw">saveRDS</span>(irace.output, <span class="st">&quot;../inst/extdata/RESULTS.rds&quot;</span>)
 <span class="kw">file.copy</span>(<span class="dt">from =</span> <span class="st">&quot;irace.Rdata&quot;</span>, <span class="dt">to =</span> <span class="st">&quot;../inst/extdata/irace-tuning.Rdata&quot;</span>)
 

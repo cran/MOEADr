@@ -138,7 +138,8 @@
 #    seed <- conf$seed
 #  
 #    # Run MOEA/D
-#    out <- moead(problem, decomp,  aggfun, neighbors, variation, update,
+#    out <- moead(preset = NULL,
+#                 problem, decomp,  aggfun, neighbors, variation, update,
 #                 constraint, scaling, stopcrit, showpars, seed)
 #  
 #    # return IGD based on reference data

@@ -51,7 +51,7 @@ in which case \code{as.integer(Sys.time())} is used for the definition.}
 necessary in regular use)}
 }
 \value{
-List object of class \emph{moeadoutput} containing:
+List object of class \emph{moead} containing:
 \itemize{
 \item information on the final population (\code{X}), its objective values (\code{Y}) and
 constraint information list (\code{V}) (see \code{\link[=evaluate_population]{evaluate_population()}} for details);
@@ -171,7 +171,7 @@ which is a binary flag defining whether the algorithm should keep an
 external solution archive (\code{TRUE}) or not (\code{FALSE}). Since it adds to the
 computational burden and memory requirements of the algorithm, the use of an
 archive population is recommended only in the case of constrained problems
-with constraint handling method that can occasionaly accept unfeasible
+with constraint handling method that can occasionally accept unfeasible
 solutions, leading to the potential loss of feasible efficient solutions for
 certain subproblems (e.g., \code{\link[=constraint_vbr]{constraint_vbr()}} with \code{type} = "sr" or "vt").
 }
