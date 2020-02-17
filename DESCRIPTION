@@ -5,12 +5,14 @@ Description: Modular implementation of Multiobjective Evolutionary Algorithms
               based on Decomposition (MOEA/D) [Zhang and Li (2007), 
               <DOI:10.1109/TEVC.2007.892759>] for quick assembling and 
               testing of new algorithmic components, as well as easy 
-              replication of published MOEA/D proposals.
-Version: 1.1.0
-Date: 2017-10-21
+              replication of published MOEA/D proposals. The full framework is
+              documented in a paper published in the Journal of Statistical 
+              Software [<doi:10.18637/jss.v092.i06>].
+Version: 1.1.1
+Date: 2020-02-17
 Imports: FNN, assertthat
 Suggests: smoof, scatterplot3d, MASS, grDevices, irace, testthat,
-        knitr, rmarkdown, emoa, ggplot2, reshape2
+        knitr, rmarkdown, emoa, ggplot2, reshape2, pkgdown
 Depends: R (>= 3.4.0)
 Authors@R: c(person("Felipe", "Campelo",
     email   = "fcampelo@ufmg.br",
@@ -28,10 +30,11 @@ Maintainer: Felipe Campelo <fcampelo@ufmg.br>
 License: GPL-2
 LazyData: TRUE
 Encoding: UTF-8
-RoxygenNote: 6.0.1
+RoxygenNote: 7.0.2
 VignetteBuilder: knitr
-URL: https://github.com/fcampelo/MOEADr
+URL: https://fcampelo.github.io/MOEADr/
+BugReports: https://github.com/fcampelo/MOEADr/issues
 NeedsCompilation: no
-Packaged: 2017-10-24 01:50:41 UTC; fcampelo
+Packaged: 2020-02-17 17:06:34 UTC; campelof
 Repository: CRAN
-Date/Publication: 2017-10-24 07:14:58 UTC
+Date/Publication: 2020-02-17 20:20:06 UTC

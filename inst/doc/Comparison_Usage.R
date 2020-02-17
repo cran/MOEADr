@@ -1,4 +1,4 @@
-## ---- eval = FALSE-------------------------------------------------------
+## ---- eval = FALSE------------------------------------------------------------
 #  suppressPackageStartupMessages(library(irace))
 #  suppressPackageStartupMessages(library(parallel))
 #  suppressPackageStartupMessages(library(smoof))
@@ -19,7 +19,7 @@
 #  # Read tunable parameter list from file
 #  parameters <- readParameters("../inst/extdata/parameters.txt")
 
-## ---- eval = FALSE-------------------------------------------------------
+## ---- eval = FALSE------------------------------------------------------------
 #  #===============
 #  ### Build training instances
 #  fname   <- paste0("UF_", 1:10)
@@ -50,7 +50,7 @@
 #                                         id         = as.numeric(strsplit(allfuns[i, 1], "_")
 #                                                                 [[1]][2]))) }
 
-## ---- eval = FALSE-------------------------------------------------------
+## ---- eval = FALSE------------------------------------------------------------
 #  target.runner <- function(experiment, scenario){
 #    force(experiment)
 #    conf <- experiment$configuration
@@ -148,7 +148,7 @@
 #    return(list(cost = calcIGD(Y = out$Y, Yref = Yref)))
 #  }
 
-## ---- eval = FALSE-------------------------------------------------------
+## ---- eval = FALSE------------------------------------------------------------
 #  ## Running the experiment
 #  irace.output <- irace::irace(scenario, parameters)
 #  saveRDS(irace.output, "../inst/extdata/RESULTS.rds")
@@ -159,7 +159,7 @@
 #  testing.main(logFile = "../inst/extdata/irace-tuning.Rdata")
 #  file.copy(from = "irace.Rdata", to = "../inst/extdata/irace-testing.Rdata")
 
-## ---- reshape2, ggplot2, echo = FALSE, fig.width = 7, fig.height = 3-----
+## ---- reshape2, ggplot2, echo = FALSE, fig.width = 7, fig.height = 3----------
 ### Loading results
 load("../inst/extdata/irace-testing.Rdata")
 
@@ -196,7 +196,7 @@ mp +
                         lwd   = 0.1) +
   ggplot2::geom_point() + ggplot2::geom_line() + ggplot2::facet_grid(.~Dimension) + ml2
 
-## ---- ggplot2, echo = FALSE, fig.width = 7, fig.height = 7---------------
+## ---- ggplot2, echo = FALSE, fig.width = 7, fig.height = 7--------------------
 ## Plot relevant parameter frequency:
 ### Select output "elite" variables
 indx <- iraceResults$allElites[[length(iraceResults$allElites)]]

@@ -6,7 +6,7 @@
 #' and should not be called directly by the user.
 #'
 #' @param stopcrit list containing the parameters defining the stop
-#' handling method. See Section `Constraint Handling` of the [moead()]
+#' handling method. See Section `Stop Criteria` of the [moead()]
 #' documentation for details.
 #' @param call.env List vector containing the stop criteria to be used.
 #' See [moead()] for details.
@@ -15,6 +15,12 @@
 #' (`TRUE`) or terminate (`FALSE`).
 #'
 #' @export
+#'
+#' @section References:
+#' F. Campelo, L.S. Batista, C. Aranha (2020): The {MOEADr} Package: A
+#' Component-Based Framework for Multiobjective Evolutionary Algorithms Based on
+#' Decomposition. Journal of Statistical Software \doi{10.18637/jss.v092.i06}\cr
+#'
 
 check_stop_criteria <- function(stopcrit, call.env){
 

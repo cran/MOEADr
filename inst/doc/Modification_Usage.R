@@ -1,4 +1,4 @@
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 variation_gaussmut <- function(X, mean = 0, sd = 0.1, p = 0.1, ...) {
   # You want to do some error checking on the parameters here
   # But for the sake of brevity in this case study, we are skipping it.
@@ -10,7 +10,7 @@ variation_gaussmut <- function(X, mean = 0, sd = 0.1, p = 0.1, ...) {
   return (X + R)                   # Add mutations to the solution matrix
 }
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 suppressPackageStartupMessages(library(MOEADr))
 suppressPackageStartupMessages(library(smoof))
 
@@ -36,7 +36,7 @@ results.myvar <- moead(problem  = problem.zdt1,
                        showpars = list(show.iters = "none"), 
                        seed     = 42)
 
-## ---- fig.width = 5.5, fig.height = 5.5, fig.align="center"--------------
+## ---- fig.width = 5.5, fig.height = 5.5, fig.align="center"-------------------
 plot(results.orig, suppress.pause = TRUE)
 plot(results.myvar, suppress.pause = TRUE)
 

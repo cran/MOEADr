@@ -1,4 +1,4 @@
-## ---- eval = FALSE-------------------------------------------------------
+## ---- eval = FALSE------------------------------------------------------------
 #  problem <- list(name        = "moeadr_dtlz1",  # objective function routine
 #                  xmin        = rep(0, 10),      # lower limits
 #                  xmax        = rep(1, 10),      # upper limits
@@ -7,7 +7,7 @@
 #                    name      = "my_constraints",# constraint function routine
 #                    epsilon   = 0.05))           # tolerance for equality constraints
 
-## ---- eval = FALSE-------------------------------------------------------
+## ---- eval = FALSE------------------------------------------------------------
 #  moeadr_dtlz1 <- function(X,     # population matrix
 #                           ...    # allow function to receive extra parameters.
 #                                  # These are unused in most cases, but it is useful
@@ -34,7 +34,7 @@
 #    return(Y)
 #  }
 
-## ---- eval = FALSE-------------------------------------------------------
+## ---- eval = FALSE------------------------------------------------------------
 #  my_constraints <- function(X,           # population matrix
 #                             epsilon = 0, # tolerance for equality constraints
 #                                          # (defaults to zero if not provided)

@@ -14,14 +14,19 @@
 #'
 #' @param X Population matrix
 #' @param etam mutation constant
-#' @param pm variable-wise probability of mutation
+#' @param pm variable-wise probability of mutation (numeric value 0 <= pm <= 1,
+#'           or use "n" for setting it as (1 / problem dimension).)
 #' @param eps small constant used to prevent divisions by zero
 #' @param ... other parameters (included for compatibility with generic call)
 #'
 #' @section References:
 #' K. Deb and S. Agrawal (1999). A Niched-Penalty Approach for Constraint
 #' Handling in Genetic Algorithms. In: Artificial Neural Nets and Genetic
-#' Algorithms, pp. 235-243, Springer.
+#' Algorithms, pp. 235-243, Springer.\cr
+#'
+#' F. Campelo, L.S. Batista, C. Aranha (2020): The {MOEADr} Package: A
+#' Component-Based Framework for Multiobjective Evolutionary Algorithms Based on
+#' Decomposition. Journal of Statistical Software \doi{10.18637/jss.v092.i06}\cr
 #'
 #' Olaf Mersmann (2012). emoa: Evolutionary Multiobjective
 #' Optimization Algorithms. R package version 0.5-0.\cr
@@ -34,6 +39,8 @@
 variation_polymut <- function(X, etam, pm, eps = 1e-6, ...){
 
   # ========== Error catching and default value definitions
+  if (identical(tolower(pm), "n")) pm <- 1 / ncol(X)
+
   assertthat::assert_that(
     is.numeric(X) && is.matrix(X),
     is.numeric(etam) && etam > 0,

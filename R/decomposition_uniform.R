@@ -23,6 +23,10 @@
 #' and a pre-organization procedure". Proc. IEEE Congress on Evolutionary
 #' Computation, Cancun, Mexico, 2013, pp. 2390–2397.
 #'
+#' F. Campelo, L.S. Batista, C. Aranha (2020): The {MOEADr} Package: A
+#' Component-Based Framework for Multiobjective Evolutionary Algorithms Based on
+#' Decomposition. Journal of Statistical Software \doi{10.18637/jss.v092.i06}\cr
+#'
 #' @examples
 #' decomp <- list(name = "uniform", N = 50, .nobj = 3)
 #' W <- decomposition_uniform(decomp)
@@ -80,6 +84,8 @@ decomposition_uniform <- function(decomp, ...){
   min_h <- H[which.min(apply(H,
                              MARGIN = 1,
                              FUN    = function(x) {cd2(construct_un(x, N))})), ]
+
+  # TODO: change this scaling to *before* calculating Un / CD2
   Un    <- (construct_un(min_h, N) - 0.5) / N
 
   if (nrow(Un) == 1) { Un <- t(Un) } # Fixes R arbitrarily choosing column major when (nf = 2) (iss 34)
