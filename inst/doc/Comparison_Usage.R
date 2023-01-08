@@ -208,6 +208,6 @@ mypars <- iraceResults$parameters
 mypars$names      <- c("T", "delta.p", "binrec.rho2", "binrec.rho3")
 mypars$nbVariable <- 4
 
-### Plot
-irace::parameterFrequency(finalConfs, mypars, cols = 2)
+### Plot (install from https://github.com/auto-optimization/iraceplot to generate plot)
+# iraceplot::parameterFrequency(finalConfs, mypars, cols = 2)
 

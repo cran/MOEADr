@@ -12,76 +12,107 @@
 
 <meta name="author" content="Felipe Campelo" />
 
-<meta name="date" content="2020-02-17" />
+<meta name="date" content="2023-01-06" />
 
 <title>Defining Problems in the MOEADr Package</title>
 
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
 
 
-<style type="text/css">code{white-space: pre;}</style>
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
 <style type="text/css" data-origin="pandoc">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
 div.sourceCode
-  {  }
+{ }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
 </style>
 <script>
 // apply pandoc div.sourceCode style to pre.sourceCode instead
@@ -90,13 +121,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   for (var i = 0; i < sheets.length; i++) {
     if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
     try { var rules = sheets[i].cssRules; } catch (e) { continue; }
-    for (var j = 0; j < rules.length; j++) {
+    var j = 0;
+    while (j < rules.length) {
       var rule = rules[j];
       // check if there is a div.sourceCode rule
-      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
       var style = rule.style.cssText;
       // check if color or background-color is set
-      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
       // replace div.sourceCode by a pre.sourceCode rule
       sheets[i].deleteRule(j);
       sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
@@ -104,6 +142,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   }
 })();
 </script>
+
 
 
 
@@ -299,171 +338,267 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 
-<h1 class="title toc-ignore">Defining Problems in the MOEADr Package</h1>
+<h1 class="title toc-ignore">Defining Problems in the MOEADr
+Package</h1>
 <h4 class="author">Felipe Campelo</h4>
-<h4 class="date">2020-02-17</h4>
+<h4 class="date">2023-01-06</h4>
 
 
 
 <div id="introduction" class="section level1">
 <h1>Introduction</h1>
-<p>This is a short guide to defining the problem structure for running MOEA/Ds using the MOEADr package. In this document, we cover:</p>
+<p>This is a short guide to defining the problem structure for running
+MOEA/Ds using the MOEADr package. In this document, we cover:</p>
 <ul>
 <li>Structure of the input variable <code>problem</code></li>
-<li>Structure of objective function routines, given as <code>problem$name</code></li>
-<li>structure of constraint function routines, given as <code>problem$constraint$name</code></li>
+<li>Structure of objective function routines, given as
+<code>problem$name</code></li>
+<li>structure of constraint function routines, given as
+<code>problem$constraint$name</code></li>
 </ul>
-<p>A general description of the algorithm and the component-based interpretation behind the MOEADr package is available in our paper<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></p>
+<p>A general description of the algorithm and the component-based
+interpretation behind the MOEADr package is available in our paper<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></p>
 </div>
 <div id="problem-structure" class="section level1">
 <h1>Problem structure</h1>
-<p>In the MOEADr package, all information regarding the problem is input as a list variable <code>problem</code>. This parameter must contain enough information for the algorithm to correctly evaluate all the objective and constraint functions, as documented in function <code>moead()</code> and replicated below for convenience.</p>
-<p>The <code>problem</code> list must contain the following required fields:</p>
+<p>In the MOEADr package, all information regarding the problem is input
+as a list variable <code>problem</code>. This parameter must contain
+enough information for the algorithm to correctly evaluate all the
+objective and constraint functions, as documented in function
+<code>moead()</code> and replicated below for convenience.</p>
+<p>The <code>problem</code> list must contain the following required
+fields:</p>
 <ul>
-<li><code>problem$name</code>, with the name of the problem instance function, that is, a routine that calculates <strong>Y</strong> = <strong>f</strong>(<strong>X</strong>). The details of this routine are documented in Section <em>Objective Functions Routine</em>, see below.<br />
+<li><code>problem$name</code>, with the name of the problem instance
+function, that is, a routine that calculates <strong>Y</strong> =
+<strong>f</strong>(<strong>X</strong>). The details of this routine are
+documented in Section <em>Objective Functions Routine</em>, see
+below.<br />
 </li>
-<li><code>problem$xmin</code>, containing a vector of lower bounds of each variable of the problem.<br />
+<li><code>problem$xmin</code>, containing a vector of lower bounds of
+each variable of the problem.<br />
 </li>
-<li><code>problem$xmax</code>, containing a vector of upper bounds of each variable of the problem.<br />
+<li><code>problem$xmax</code>, containing a vector of upper bounds of
+each variable of the problem.<br />
 </li>
-<li><code>problem$m</code>, containing a positive integer <code>m&gt;1</code> with the number of objectives</li>
+<li><code>problem$m</code>, containing a positive integer
+<code>m&gt;1</code> with the number of objectives</li>
 </ul>
-<p>Fields <code>$xmin</code> and <code>$xmax</code> provide information for the internal variable standardization performed by the MOEADr package, as well as information about the number of problem variables. This information is also used for the definition of the initial population, but it <strong>does not</strong> guarantee that the points will remain within this interval as the iterations progress - for that, variation operators such as <code>truncate</code> or explicit constraints (see below, Section <em>Constraint Functions Routine</em>) must be employed.</p>
-<p>Besides these fields, <code>problem</code> should contain any other relevant inputs for the routine listed in <code>problem$name</code>.</p>
-<p><code>problem</code> may also contain the optional field <code>problem$constraints</code>, which is itself a list object containing information about the problem constraints. If present, <code>problem$constraints</code> must contain the following fields:</p>
+<p>Fields <code>$xmin</code> and <code>$xmax</code> provide information
+for the internal variable standardization performed by the MOEADr
+package, as well as information about the number of problem variables.
+This information is also used for the definition of the initial
+population, but it <strong>does not</strong> guarantee that the points
+will remain within this interval as the iterations progress - for that,
+variation operators such as <code>truncate</code> or explicit
+constraints (see below, Section <em>Constraint Functions Routine</em>)
+must be employed.</p>
+<p>Besides these fields, <code>problem</code> should contain any other
+relevant inputs for the routine listed in <code>problem$name</code>.</p>
+<p><code>problem</code> may also contain the optional field
+<code>problem$constraints</code>, which is itself a list object
+containing information about the problem constraints. If present,
+<code>problem$constraints</code> must contain the following fields:</p>
 <ul>
-<li><code>problem$constraints$name</code> - (required) name of the function that calculates the constraint values. The details of this routine are documented in Section <em>Constraint Functions Routine</em>, see below.<br />
+<li><code>problem$constraints$name</code> - (required) name of the
+function that calculates the constraint values. The details of this
+routine are documented in Section <em>Constraint Functions Routine</em>,
+see below.<br />
 </li>
-<li><code>problem$constraints$epsilon</code> - (optional) a small non-negative value indicating the tolerance to be considered for equality constraints. Defaults to zero.</li>
+<li><code>problem$constraints$epsilon</code> - (optional) a small
+non-negative value indicating the tolerance to be considered for
+equality constraints. Defaults to zero.</li>
 </ul>
-<p>Besides these fields, <code>problem$constraints</code> should contain any other relevant inputs for the routine listed in <code>problem$constraints$name</code>.</p>
-<p>To guide us through the steps required to define a problem structure for the MOEADr package, assume that we want to use the MOEADr framework to solve a 10-variable, 2-objective DTLZ1 benchmark function<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>. Assume that the feasible space is defined by the interval [0, 1] for all variables, and by <span class="math inline">\(x_1^2 + 2x_2^2 \leq 1.2\)</span> and <span class="math inline">\(x_3x_4 = 0.5\)</span>. In this case, the <code>problem</code> variable would be defined as:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">problem &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">name        =</span> <span class="st">&quot;moeadr_dtlz1&quot;</span>,  <span class="co"># objective function routine</span></a>
-<a class="sourceLine" id="cb1-2" data-line-number="2">                <span class="dt">xmin        =</span> <span class="kw">rep</span>(<span class="dv">0</span>, <span class="dv">10</span>),      <span class="co"># lower limits</span></a>
-<a class="sourceLine" id="cb1-3" data-line-number="3">                <span class="dt">xmax        =</span> <span class="kw">rep</span>(<span class="dv">1</span>, <span class="dv">10</span>),      <span class="co"># upper limits</span></a>
-<a class="sourceLine" id="cb1-4" data-line-number="4">                <span class="dt">m           =</span> <span class="dv">2</span>,               <span class="co"># number of objectives</span></a>
-<a class="sourceLine" id="cb1-5" data-line-number="5">                <span class="dt">constraints =</span> <span class="kw">list</span>(</a>
-<a class="sourceLine" id="cb1-6" data-line-number="6">                  <span class="dt">name      =</span> <span class="st">&quot;my_constraints&quot;</span>,<span class="co"># constraint function routine</span></a>
-<a class="sourceLine" id="cb1-7" data-line-number="7">                  <span class="dt">epsilon   =</span> <span class="fl">0.05</span>))           <span class="co"># tolerance for equality constraints</span></a></code></pre></div>
-<p>The specific requirements regarding functions <code>problem$name</code> and <code>problem$constraints$name</code> are provided in the following sections.</p>
+<p>Besides these fields, <code>problem$constraints</code> should contain
+any other relevant inputs for the routine listed in
+<code>problem$constraints$name</code>.</p>
+<p>To guide us through the steps required to define a problem structure
+for the MOEADr package, assume that we want to use the MOEADr framework
+to solve a 10-variable, 2-objective DTLZ1 benchmark function<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>. Assume
+that the feasible space is defined by the interval [0, 1] for all
+variables, and by <span class="math inline">\(x_1^2 + 2x_2^2 \leq
+1.2\)</span> and <span class="math inline">\(x_3x_4 = 0.5\)</span>. In
+this case, the <code>problem</code> variable would be defined as:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>problem <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">name        =</span> <span class="st">&quot;moeadr_dtlz1&quot;</span>,  <span class="co"># objective function routine</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">xmin        =</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="dv">10</span>),      <span class="co"># lower limits</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">xmax        =</span> <span class="fu">rep</span>(<span class="dv">1</span>, <span class="dv">10</span>),      <span class="co"># upper limits</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">m           =</span> <span class="dv">2</span>,               <span class="co"># number of objectives</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">constraints =</span> <span class="fu">list</span>(</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>                  <span class="at">name      =</span> <span class="st">&quot;my_constraints&quot;</span>,<span class="co"># constraint function routine</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>                  <span class="at">epsilon   =</span> <span class="fl">0.05</span>))           <span class="co"># tolerance for equality constraints</span></span></code></pre></div>
+<p>The specific requirements regarding functions
+<code>problem$name</code> and <code>problem$constraints$name</code> are
+provided in the following sections.</p>
 </div>
 <div id="objective-functions-routine" class="section level1">
 <h1>Objective Functions Routine</h1>
-<p>The routine indicated in <code>problem$name</code> must be able to receive a [ N x n<sub>v</sub> ] matrix, where each row represents one candidate solution. The name of the input argument that receives the population matrix must be either  or .</p>
-<p>This routine must return a [ N x n<sub>f</sub> ] matrix, where each row contains the n<sub>f</sub> objective function values for one solution.</p>
-<p>To illustrate these requirements, we provide below the example function <code>moeadr_dtlz1</code>.<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a> This function is simply a MOEADr-compliant wrapper for the DTLZ1 implementation available in the <code>smoof</code> package.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">moeadr_dtlz1 &lt;-<span class="st"> </span><span class="cf">function</span>(X,     <span class="co"># population matrix</span></a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">                         ...    <span class="co"># allow function to receive extra parameters. </span></a>
-<a class="sourceLine" id="cb2-3" data-line-number="3">                                <span class="co"># These are unused in most cases, but it is useful </span></a>
-<a class="sourceLine" id="cb2-4" data-line-number="4">                                <span class="co"># for preventng errors due to unwanted parameters </span></a>
-<a class="sourceLine" id="cb2-5" data-line-number="5">                                <span class="co"># being passed</span></a>
-<a class="sourceLine" id="cb2-6" data-line-number="6">){</a>
-<a class="sourceLine" id="cb2-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb2-8" data-line-number="8">  <span class="co"># &quot;smoof&quot; is listed in the Suggests field MOEADr's DESCRIPTION, but we need to </span></a>
-<a class="sourceLine" id="cb2-9" data-line-number="9">  <span class="co"># be sure that it is available, so:</span></a>
-<a class="sourceLine" id="cb2-10" data-line-number="10">  <span class="cf">if</span>(<span class="op">!</span>(<span class="st">&quot;smoof&quot;</span> <span class="op">%in%</span><span class="st"> </span><span class="kw">rownames</span>(utils<span class="op">::</span><span class="kw">installed.packages</span>()))){</a>
-<a class="sourceLine" id="cb2-11" data-line-number="11">    <span class="kw">stop</span>(<span class="st">&quot;Please install package 'smoof' to continue&quot;</span>)</a>
-<a class="sourceLine" id="cb2-12" data-line-number="12">  }</a>
-<a class="sourceLine" id="cb2-13" data-line-number="13">  </a>
-<a class="sourceLine" id="cb2-14" data-line-number="14">  <span class="co"># make 10-variable, 2-objective DTLZ1</span></a>
-<a class="sourceLine" id="cb2-15" data-line-number="15">  smoof_dtlz1 &lt;-<span class="st"> </span>smoof<span class="op">::</span><span class="kw">makeDTLZ1Function</span>(<span class="dt">dimensions   =</span> <span class="dv">10</span>, </a>
-<a class="sourceLine" id="cb2-16" data-line-number="16">                                          <span class="dt">n.objectives =</span> <span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb2-17" data-line-number="17">  </a>
-<a class="sourceLine" id="cb2-18" data-line-number="18">  <span class="co"># Evaluate points in a vectorized manner:</span></a>
-<a class="sourceLine" id="cb2-19" data-line-number="19">  Y &lt;-<span class="st"> </span><span class="kw">t</span>(<span class="kw">apply</span>(X,</a>
-<a class="sourceLine" id="cb2-20" data-line-number="20">               <span class="dt">MARGIN =</span> <span class="dv">1</span>,</a>
-<a class="sourceLine" id="cb2-21" data-line-number="21">               <span class="dt">FUN =</span> smoof_dtlz1))</a>
-<a class="sourceLine" id="cb2-22" data-line-number="22">  </a>
-<a class="sourceLine" id="cb2-23" data-line-number="23">  <span class="co"># Return [N x n_f] matrix</span></a>
-<a class="sourceLine" id="cb2-24" data-line-number="24">  <span class="kw">return</span>(Y)</a>
-<a class="sourceLine" id="cb2-25" data-line-number="25">}</a></code></pre></div>
-<p>Notice that the objective functions routine does not use the information from <code>xmin</code>, <code>xmax</code>, <code>m</code>, or <code>constraints</code> - these fields are used elsewhere in the MOEADr structure to define the initial population, weight matrices, truncation operators etc.</p>
+<p>The routine indicated in <code>problem$name</code> must be able to
+receive a [ N x n<sub>v</sub> ] matrix, where each row represents one
+candidate solution. The name of the input argument that receives the
+population matrix must be either or .</p>
+<p>This routine must return a [ N x n<sub>f</sub> ] matrix, where each
+row contains the n<sub>f</sub> objective function values for one
+solution.</p>
+<p>To illustrate these requirements, we provide below the example
+function <code>moeadr_dtlz1</code>.<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a> This function is simply a MOEADr-compliant
+wrapper for the DTLZ1 implementation available in the <code>smoof</code>
+package.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>moeadr_dtlz1 <span class="ot">&lt;-</span> <span class="cf">function</span>(X,     <span class="co"># population matrix</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>                         ...    <span class="co"># allow function to receive extra parameters. </span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>                                <span class="co"># These are unused in most cases, but it is useful </span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>                                <span class="co"># for preventng errors due to unwanted parameters </span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>                                <span class="co"># being passed</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>){</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># &quot;smoof&quot; is listed in the Suggests field MOEADr&#39;s DESCRIPTION, but we need to </span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># be sure that it is available, so:</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="sc">!</span>(<span class="st">&quot;smoof&quot;</span> <span class="sc">%in%</span> <span class="fu">rownames</span>(utils<span class="sc">::</span><span class="fu">installed.packages</span>()))){</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&quot;Please install package &#39;smoof&#39; to continue&quot;</span>)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># make 10-variable, 2-objective DTLZ1</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>  smoof_dtlz1 <span class="ot">&lt;-</span> smoof<span class="sc">::</span><span class="fu">makeDTLZ1Function</span>(<span class="at">dimensions   =</span> <span class="dv">10</span>, </span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">n.objectives =</span> <span class="dv">2</span>)</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Evaluate points in a vectorized manner:</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>  Y <span class="ot">&lt;-</span> <span class="fu">t</span>(<span class="fu">apply</span>(X,</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>               <span class="at">MARGIN =</span> <span class="dv">1</span>,</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>               <span class="at">FUN =</span> smoof_dtlz1))</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Return [N x n_f] matrix</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(Y)</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>Notice that the objective functions routine does not use the
+information from <code>xmin</code>, <code>xmax</code>, <code>m</code>,
+or <code>constraints</code> - these fields are used elsewhere in the
+MOEADr structure to define the initial population, weight matrices,
+truncation operators etc.</p>
 </div>
 <div id="constraint-functions-routine" class="section level1">
 <h1>Constraint Functions Routine</h1>
-<p>As in the objective functions case, the routine indicated in <code>problem$constraints$name</code> must be able to receive a [ N x n<sub>v</sub> ] matrix, where each row represents one candidate solution. The name of the input argument that receives the population matrix must be either  or .</p>
-<p>This function must return a list object containing the following fields:</p>
+<p>As in the objective functions case, the routine indicated in
+<code>problem$constraints$name</code> must be able to receive a [ N x
+n<sub>v</sub> ] matrix, where each row represents one candidate
+solution. The name of the input argument that receives the population
+matrix must be either or .</p>
+<p>This function must return a list object containing the following
+fields:</p>
 <ul>
-<li><code>$Cmatrix</code>, a [ N x (n<sub>g</sub> + n<sub>h</sub>) ] matrix, where each row contains the individual constraint function values for one solution. The names of each column should ideally be informative regardind to which constraint the function refers (this is not mandatory, but it is a good practice that can save the user a great deal of time).<br />
+<li><code>$Cmatrix</code>, a [ N x (n<sub>g</sub> + n<sub>h</sub>) ]
+matrix, where each row contains the individual constraint function
+values for one solution. The names of each column should ideally be
+informative regardind to which constraint the function refers (this is
+not mandatory, but it is a good practice that can save the user a great
+deal of time).<br />
 </li>
-<li><code>$Vmatrix</code>, a [ N x (n<sub>g</sub> + n<sub>h</sub>) ] matrix, where each row contains the individual constraint <strong>violations</strong> for one solution.</li>
-<li><code>$v</code>, a vector [N x 1], where each component contains the total violation of one solution, that is, the value of:</li>
+<li><code>$Vmatrix</code>, a [ N x (n<sub>g</sub> + n<sub>h</sub>) ]
+matrix, where each row contains the individual constraint
+<strong>violations</strong> for one solution.</li>
+<li><code>$v</code>, a vector [N x 1], where each component contains the
+total violation of one solution, that is, the value of:</li>
 </ul>
-<p><span class="math display">\[v[k] = v(x_k) = \sum_i max(~g_i(x_k),~~0) + \sum_j max(~|h_j(x_k)| - \epsilon,~~0)\]</span> <code>v</code> is calculated simply as <code>rowsums(Vmatrix)</code>, but returning it prevents having to re-compute <code>v</code> in different places of the MOEA/D structure.</p>
-<p>To illustrate these requirements, we provide below the example function <code>my_constraints</code>.<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a> Recall that we have a number of different constraints that were stated in the problem definition:</p>
+<p><span class="math display">\[v[k] = v(x_k) = \sum_i
+max(~g_i(x_k),~~0) + \sum_j max(~|h_j(x_k)| - \epsilon,~~0)\]</span>
+<code>v</code> is calculated simply as <code>rowsums(Vmatrix)</code>,
+but returning it prevents having to re-compute <code>v</code> in
+different places of the MOEA/D structure.</p>
+<p>To illustrate these requirements, we provide below the example
+function <code>my_constraints</code>.<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a> Recall that we have a number of different
+constraints that were stated in the problem definition:</p>
 <ul>
 <li>10 inequality constraints regarding the requirement that <span class="math inline">\(x_i \geq 0\)</span></li>
 <li>10 inequality constraints regarding the requirement that <span class="math inline">\(x_i \leq 1\)</span></li>
-<li>1 inequality constraint <span class="math inline">\(g_1(\mathbf{x}) = x_1^2 + 2x_2^2 - 1.2 \leq 0\)</span></li>
-<li>1 equality constraint <span class="math inline">\(h_1(\mathbf{x}) = x_3x_4 - 0.5 = 0\)</span></li>
+<li>1 inequality constraint <span class="math inline">\(g_1(\mathbf{x})
+= x_1^2 + 2x_2^2 - 1.2 \leq 0\)</span></li>
+<li>1 equality constraint <span class="math inline">\(h_1(\mathbf{x}) =
+x_3x_4 - 0.5 = 0\)</span></li>
 </ul>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">my_constraints &lt;-<span class="st"> </span><span class="cf">function</span>(X,           <span class="co"># population matrix</span></a>
-<a class="sourceLine" id="cb3-2" data-line-number="2">                           <span class="dt">epsilon =</span> <span class="dv">0</span>, <span class="co"># tolerance for equality constraints</span></a>
-<a class="sourceLine" id="cb3-3" data-line-number="3">                                        <span class="co"># (defaults to zero if not provided)</span></a>
-<a class="sourceLine" id="cb3-4" data-line-number="4">                           ...)</a>
-<a class="sourceLine" id="cb3-5" data-line-number="5">{</a>
-<a class="sourceLine" id="cb3-6" data-line-number="6">  </a>
-<a class="sourceLine" id="cb3-7" data-line-number="7">  nv &lt;-<span class="st"> </span><span class="dv">10</span> <span class="co"># number of variables of the problem</span></a>
-<a class="sourceLine" id="cb3-8" data-line-number="8">  </a>
-<a class="sourceLine" id="cb3-9" data-line-number="9">  <span class="co"># Prepare output matrix of constraint function values</span></a>
-<a class="sourceLine" id="cb3-10" data-line-number="10">  Cmatrix &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">numeric</span>(), </a>
-<a class="sourceLine" id="cb3-11" data-line-number="11">                    <span class="dt">nrow =</span> <span class="kw">nrow</span>(X),</a>
-<a class="sourceLine" id="cb3-12" data-line-number="12">                    <span class="dt">ncol =</span> <span class="dv">2</span> <span class="op">*</span><span class="st"> </span>nv <span class="op">+</span><span class="st"> </span><span class="dv">2</span>) <span class="co"># 20 inequality box constraints, plus g1 and h1</span></a>
-<a class="sourceLine" id="cb3-13" data-line-number="13">  </a>
-<a class="sourceLine" id="cb3-14" data-line-number="14">  <span class="co"># Set informative column names (be nice to your users!)</span></a>
-<a class="sourceLine" id="cb3-15" data-line-number="15">  <span class="kw">colnames</span>(Cmatrix) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">paste0</span>(<span class="st">&quot;x&quot;</span>, </a>
-<a class="sourceLine" id="cb3-16" data-line-number="16">                                <span class="kw">rep</span>(<span class="dv">1</span><span class="op">:</span>nv, <span class="dt">times =</span> <span class="dv">2</span>), </a>
-<a class="sourceLine" id="cb3-17" data-line-number="17">                                <span class="kw">rep</span>(<span class="kw">c</span>(<span class="st">&quot;min&quot;</span>,<span class="st">&quot;max&quot;</span>), <span class="dt">each =</span> nv)),</a>
-<a class="sourceLine" id="cb3-18" data-line-number="18">                         <span class="st">&quot;g1&quot;</span>,</a>
-<a class="sourceLine" id="cb3-19" data-line-number="19">                         <span class="st">&quot;h1&quot;</span>)</a>
-<a class="sourceLine" id="cb3-20" data-line-number="20">                    </a>
-<a class="sourceLine" id="cb3-21" data-line-number="21">  <span class="co"># Box limits of the feasible space</span></a>
-<a class="sourceLine" id="cb3-22" data-line-number="22">  Xmin &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">0</span>, <span class="dt">nrow =</span> <span class="kw">nrow</span>(X), <span class="dt">ncol =</span> nv)</a>
-<a class="sourceLine" id="cb3-23" data-line-number="23">  Xmax &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">1</span>, <span class="dt">nrow =</span> <span class="kw">nrow</span>(X), <span class="dt">ncol =</span> nv)</a>
-<a class="sourceLine" id="cb3-24" data-line-number="24">  </a>
-<a class="sourceLine" id="cb3-25" data-line-number="25">  <span class="co"># Calculate &quot;x_i &gt;= 0&quot; and &quot;x_i &lt;= 1&quot; constraints</span></a>
-<a class="sourceLine" id="cb3-26" data-line-number="26">  Cmatrix[, <span class="dv">1</span><span class="op">:</span>nv]              &lt;-<span class="st"> </span>Xmin <span class="op">-</span><span class="st"> </span>X</a>
-<a class="sourceLine" id="cb3-27" data-line-number="27">  Cmatrix[, (nv <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)<span class="op">:</span>(<span class="dv">2</span> <span class="op">*</span><span class="st"> </span>nv)] &lt;-<span class="st"> </span>X <span class="op">-</span><span class="st"> </span>Xmax</a>
-<a class="sourceLine" id="cb3-28" data-line-number="28">  </a>
-<a class="sourceLine" id="cb3-29" data-line-number="29">  <span class="co"># g1 and h1 functions</span></a>
-<a class="sourceLine" id="cb3-30" data-line-number="30">  g1 &lt;-<span class="st"> </span><span class="cf">function</span>(X){</a>
-<a class="sourceLine" id="cb3-31" data-line-number="31">    <span class="kw">return</span>(X[, <span class="dv">1</span>] <span class="op">^</span><span class="st"> </span><span class="dv">2</span> <span class="op">+</span><span class="st"> </span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span>X[, <span class="dv">2</span>] <span class="op">^</span><span class="st"> </span><span class="dv">2</span> <span class="op">-</span><span class="st"> </span><span class="fl">1.2</span>)</a>
-<a class="sourceLine" id="cb3-32" data-line-number="32">  }</a>
-<a class="sourceLine" id="cb3-33" data-line-number="33">  h1 &lt;-<span class="st"> </span><span class="cf">function</span>(X){</a>
-<a class="sourceLine" id="cb3-34" data-line-number="34">    <span class="kw">return</span>(X[, <span class="dv">3</span>] <span class="op">*</span><span class="st"> </span>X[, <span class="dv">4</span>] <span class="op">-</span><span class="st"> </span><span class="fl">0.5</span>)</a>
-<a class="sourceLine" id="cb3-35" data-line-number="35">  }</a>
-<a class="sourceLine" id="cb3-36" data-line-number="36">  </a>
-<a class="sourceLine" id="cb3-37" data-line-number="37">  <span class="co"># Calculate g1(x) and h1(x)</span></a>
-<a class="sourceLine" id="cb3-38" data-line-number="38">  Cmatrix[, <span class="dv">2</span> <span class="op">*</span><span class="st"> </span>nv <span class="op">+</span><span class="st"> </span><span class="dv">1</span>] &lt;-<span class="st"> </span><span class="kw">g1</span>(X)</a>
-<a class="sourceLine" id="cb3-39" data-line-number="39">  <span class="kw">Cmatrix</span>(, <span class="dv">2</span> <span class="op">*</span><span class="st"> </span>nv <span class="op">+</span><span class="st"> </span><span class="dv">2</span>) &lt;-<span class="st"> </span><span class="kw">h1</span>(X)</a>
-<a class="sourceLine" id="cb3-40" data-line-number="40">  </a>
-<a class="sourceLine" id="cb3-41" data-line-number="41">  <span class="co"># Assemble matrix of *violations*</span></a>
-<a class="sourceLine" id="cb3-42" data-line-number="42">  Vmatrix &lt;-<span class="st"> </span>Cmatrix</a>
-<a class="sourceLine" id="cb3-43" data-line-number="43">  Vmatrix[, <span class="dv">1</span><span class="op">:</span>(<span class="dv">2</span> <span class="op">*</span><span class="st"> </span>nv <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)] &lt;-<span class="st"> </span><span class="kw">pmax</span>(Vmatrix[, <span class="dv">1</span><span class="op">:</span>(<span class="dv">2</span> <span class="op">*</span><span class="st"> </span>nv <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)], <span class="dv">0</span>)        <span class="co"># inequality constraints</span></a>
-<a class="sourceLine" id="cb3-44" data-line-number="44">  Vmatrix[, <span class="dv">2</span> <span class="op">*</span><span class="st"> </span>nv <span class="op">+</span><span class="st"> </span><span class="dv">2</span>] &lt;-<span class="st"> </span><span class="kw">pmax</span>(<span class="kw">abs</span>(Vmatrix[, <span class="dv">2</span> <span class="op">*</span><span class="st"> </span>nv <span class="op">+</span><span class="st"> </span><span class="dv">2</span>]) <span class="op">-</span><span class="st"> </span>epsilon, <span class="dv">0</span>) <span class="co"># equality constraint h1</span></a>
-<a class="sourceLine" id="cb3-45" data-line-number="45">  </a>
-<a class="sourceLine" id="cb3-46" data-line-number="46">  <span class="co"># Return necessary variables</span></a>
-<a class="sourceLine" id="cb3-47" data-line-number="47">  <span class="kw">return</span>(<span class="kw">list</span>(<span class="dt">Cmatrix =</span> Cmatrix,</a>
-<a class="sourceLine" id="cb3-48" data-line-number="48">              <span class="dt">Vmatrix =</span> Vmatrix,</a>
-<a class="sourceLine" id="cb3-49" data-line-number="49">              <span class="dt">v       =</span> <span class="kw">rowSums</span>(Vmatrix)))</a>
-<a class="sourceLine" id="cb3-50" data-line-number="50">  </a>
-<a class="sourceLine" id="cb3-51" data-line-number="51">}</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>my_constraints <span class="ot">&lt;-</span> <span class="cf">function</span>(X,           <span class="co"># population matrix</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>                           <span class="at">epsilon =</span> <span class="dv">0</span>, <span class="co"># tolerance for equality constraints</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>                                        <span class="co"># (defaults to zero if not provided)</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>                           ...)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  nv <span class="ot">&lt;-</span> <span class="dv">10</span> <span class="co"># number of variables of the problem</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Prepare output matrix of constraint function values</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  Cmatrix <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">numeric</span>(), </span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>                    <span class="at">nrow =</span> <span class="fu">nrow</span>(X),</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>                    <span class="at">ncol =</span> <span class="dv">2</span> <span class="sc">*</span> nv <span class="sc">+</span> <span class="dv">2</span>) <span class="co"># 20 inequality box constraints, plus g1 and h1</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Set informative column names (be nice to your users!)</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">colnames</span>(Cmatrix) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">paste0</span>(<span class="st">&quot;x&quot;</span>, </span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>                                <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span>nv, <span class="at">times =</span> <span class="dv">2</span>), </span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>                                <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">&quot;min&quot;</span>,<span class="st">&quot;max&quot;</span>), <span class="at">each =</span> nv)),</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>                         <span class="st">&quot;g1&quot;</span>,</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>                         <span class="st">&quot;h1&quot;</span>)</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>                    </span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Box limits of the feasible space</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>  Xmin <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">nrow =</span> <span class="fu">nrow</span>(X), <span class="at">ncol =</span> nv)</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>  Xmax <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">1</span>, <span class="at">nrow =</span> <span class="fu">nrow</span>(X), <span class="at">ncol =</span> nv)</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Calculate &quot;x_i &gt;= 0&quot; and &quot;x_i &lt;= 1&quot; constraints</span></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>  Cmatrix[, <span class="dv">1</span><span class="sc">:</span>nv]              <span class="ot">&lt;-</span> Xmin <span class="sc">-</span> X</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>  Cmatrix[, (nv <span class="sc">+</span> <span class="dv">1</span>)<span class="sc">:</span>(<span class="dv">2</span> <span class="sc">*</span> nv)] <span class="ot">&lt;-</span> X <span class="sc">-</span> Xmax</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>  <span class="co"># g1 and h1 functions</span></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>  g1 <span class="ot">&lt;-</span> <span class="cf">function</span>(X){</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(X[, <span class="dv">1</span>] <span class="sc">^</span> <span class="dv">2</span> <span class="sc">+</span> <span class="dv">2</span> <span class="sc">*</span> X[, <span class="dv">2</span>] <span class="sc">^</span> <span class="dv">2</span> <span class="sc">-</span> <span class="fl">1.2</span>)</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>  h1 <span class="ot">&lt;-</span> <span class="cf">function</span>(X){</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(X[, <span class="dv">3</span>] <span class="sc">*</span> X[, <span class="dv">4</span>] <span class="sc">-</span> <span class="fl">0.5</span>)</span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Calculate g1(x) and h1(x)</span></span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>  Cmatrix[, <span class="dv">2</span> <span class="sc">*</span> nv <span class="sc">+</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">g1</span>(X)</span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">Cmatrix</span>(, <span class="dv">2</span> <span class="sc">*</span> nv <span class="sc">+</span> <span class="dv">2</span>) <span class="ot">&lt;-</span> <span class="fu">h1</span>(X)</span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Assemble matrix of *violations*</span></span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>  Vmatrix <span class="ot">&lt;-</span> Cmatrix</span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>  Vmatrix[, <span class="dv">1</span><span class="sc">:</span>(<span class="dv">2</span> <span class="sc">*</span> nv <span class="sc">+</span> <span class="dv">1</span>)] <span class="ot">&lt;-</span> <span class="fu">pmax</span>(Vmatrix[, <span class="dv">1</span><span class="sc">:</span>(<span class="dv">2</span> <span class="sc">*</span> nv <span class="sc">+</span> <span class="dv">1</span>)], <span class="dv">0</span>)        <span class="co"># inequality constraints</span></span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>  Vmatrix[, <span class="dv">2</span> <span class="sc">*</span> nv <span class="sc">+</span> <span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="fu">pmax</span>(<span class="fu">abs</span>(Vmatrix[, <span class="dv">2</span> <span class="sc">*</span> nv <span class="sc">+</span> <span class="dv">2</span>]) <span class="sc">-</span> epsilon, <span class="dv">0</span>) <span class="co"># equality constraint h1</span></span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Return necessary variables</span></span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">list</span>(<span class="at">Cmatrix =</span> Cmatrix,</span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>              <span class="at">Vmatrix =</span> Vmatrix,</span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>              <span class="at">v       =</span> <span class="fu">rowSums</span>(Vmatrix)))</span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <p>Some <strong>VERY</strong> important points:</p>
 <ul>
-<li>All constraints are expressed in the standard form, that is, <span class="math inline">\(g_i(\mathbf{x}) \leq 0\)</span> and <span class="math inline">\(h_j(\mathbf{x}) = 0\)</span>. You may choose to express them differently, but in that case be extra careful with the calculations of <code>Vmatrix</code> and <code>v</code>;</li>
-<li>All box constraints must be included as part of the constraint violations routine, otherwise they will be ignored by the constraint handling approaches. This can in principle be a valid option, for instance, if i) the problem is actually unconstrained; or ii) a repair method such as the <em>truncate</em> variation operator is used.</li>
+<li>All constraints are expressed in the standard form, that is, <span class="math inline">\(g_i(\mathbf{x}) \leq 0\)</span> and <span class="math inline">\(h_j(\mathbf{x}) = 0\)</span>. You may choose to
+express them differently, but in that case be extra careful with the
+calculations of <code>Vmatrix</code> and <code>v</code>;</li>
+<li>All box constraints must be included as part of the constraint
+violations routine, otherwise they will be ignored by the constraint
+handling approaches. This can in principle be a valid option, for
+instance, if i) the problem is actually unconstrained; or ii) a repair
+method such as the <em>truncate</em> variation operator is used.</li>
 </ul>
 <hr />
-<p>The MOEADr package already provides a convenient implementation for a “box constraints” (function <code>box_constraints()</code>) and “unitary constraints” (function <code>unitary_constraints()</code>). See the specific documentation for details.</p>
-<p>To use these functions, simple make <code>constraints = list(name = &quot;box_constraints&quot;)</code> (or <code>&quot;unitary_constraints&quot;</code>, if that is the case) in your definition of the <code>problem</code> input. And don’t forget the <code>epsilon</code> in the case of unitary constraints!</p>
+<p>The MOEADr package already provides a convenient implementation for a
+“box constraints” (function <code>box_constraints()</code>) and “unitary
+constraints” (function <code>unitary_constraints()</code>). See the
+specific documentation for details.</p>
+<p>To use these functions, simple make
+<code>constraints = list(name = &quot;box_constraints&quot;)</code> (or
+<code>&quot;unitary_constraints&quot;</code>, if that is the case) in your
+definition of the <code>problem</code> input. And don’t forget the
+<code>epsilon</code> in the case of unitary constraints!</p>
 </div>
-<div class="footnotes">
+<div class="footnotes footnotes-end-of-document">
 <hr />
 <ol>
-<li id="fn1"><p>F. Campelo, L.S. Batista and C. Aranha, “A Component-Wise Perspective on Multiobjective Evolutionary Algorithms based on Decomposition”, in preparation.<a href="#fnref1" class="footnote-back">↩</a></p></li>
-<li id="fn2"><p><a href="https://deap.readthedocs.io/en/master/api/benchmarks.html#deap.benchmarks.dtlz1" class="uri">https://deap.readthedocs.io/en/master/api/benchmarks.html#deap.benchmarks.dtlz1</a><a href="#fnref2" class="footnote-back">↩</a></p></li>
-<li id="fn3"><p>This function is not available in the MOEADr package - instead we provide the more general function <code>make_vectorized_smoof()</code>. See the documentation for details.<a href="#fnref3" class="footnote-back">↩</a></p></li>
-<li id="fn4"><p>Also not available in the MOEADr package, since it does not make much practical sense.<a href="#fnref4" class="footnote-back">↩</a></p></li>
+<li id="fn1"><p>F. Campelo, L.S. Batista and C. Aranha, “A
+Component-Wise Perspective on Multiobjective Evolutionary Algorithms
+based on Decomposition”, in preparation.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn2"><p><a href="https://deap.readthedocs.io/en/master/api/benchmarks.html#deap.benchmarks.dtlz1" class="uri">https://deap.readthedocs.io/en/master/api/benchmarks.html#deap.benchmarks.dtlz1</a><a href="#fnref2" class="footnote-back">↩︎</a></p></li>
+<li id="fn3"><p>This function is not available in the MOEADr package -
+instead we provide the more general function
+<code>make_vectorized_smoof()</code>. See the documentation for
+details.<a href="#fnref3" class="footnote-back">↩︎</a></p></li>
+<li id="fn4"><p>Also not available in the MOEADr package, since it does
+not make much practical sense.<a href="#fnref4" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
 
